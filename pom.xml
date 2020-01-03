@@ -2,6 +2,13 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.2.1.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
   <!--  理财平台的基本信息-->
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.uek.project</groupId>
@@ -9,23 +16,128 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+<!--  子模块-->
+  <modules>
+    <module>entity</module>
+    <module>manager</module>
+    <module>sale</module>
+    <module>util</module>
+    <module>api</module>
+    <module>swagger</module>
+  </modules>
+
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
-  <distributionManagement>
-    <site>
-      <id>website</id>
-      <url>scp://webhost.company.com/www/website</url>
-    </site>
-  </distributionManagement>
+<!--  <distributionManagement>-->
+<!--    <site>-->
+<!--      <id>website</id>-->
+<!--      <url>scp://webhost.company.com/www/website</url>-->
+<!--    </site>-->
+<!--  </distributionManagement>-->
+
 <!--项目的配置信息-->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <swagger.version>2.6.1</swagger.version>
+      <springboot.version>2.2.1.RELEASE</springboot.version>
+      <lombok.version>1.18.10</lombok.version>
+      <mysql.version>8.0.18</mysql.version>
   </properties>
-<!--项目的依赖信息-->
-  <dependencies>
 
-  </dependencies>
+<!--项目的依赖信息-->
+  <!-- 5.
+    设置依赖管理 它不真正的引入依赖包，只是做好准备，随时用的时候再引入项目中
+    pom项目本身是没有任何实际代码的项目，它其实不需要进行编译，打包等工作，
+    它只是用于管理子项目
+ -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-jdbc</artifactId>
+        <version>${springboot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${springboot.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <version>${springboot.version}</version>
+        <scope>runtime</scope>
+        <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <optional>true</optional>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <version>${springboot.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- Druid连接池 -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid</artifactId>
+        <version>1.0.18</version>
+      </dependency>
+
+      <!-- 引入Swagger接口文档插件 -->
+      <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger2</artifactId>
+        <version>${swagger.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.springfox</groupId>
+        <artifactId>springfox-swagger-ui</artifactId>
+        <version>${swagger.version}</version>
+      </dependency>
+
+      <!-- JSON处理工具类 -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>1.2.62</version>
+      </dependency>
+
+      <!-- SpringBoot2整合MyBatis框架-->
+      <dependency>
+        <groupId>org.mybatis.spring.boot</groupId>
+        <artifactId>mybatis-spring-boot-starter</artifactId>
+        <version>2.1.1</version>
+      </dependency>
+
+      <!-- MyBatis PageHelper分页插件 -->
+      <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper-spring-boot-starter</artifactId>
+        <version>1.2.12</version>
+      </dependency>
+
+      <!-- SpringBoot引入模板引擎技术处理页面 -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        <version>${springboot.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 <!--  构建插件信息-->
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
@@ -42,13 +154,13 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${springboot.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
 
-  <reporting>
-    <plugins>
-
-    </plugins>
-  </reporting>
 </project>
